@@ -2,7 +2,7 @@
 # =====================================================
 # focusmode.sh — Block distracting websites temporarily
 # Author: Prakash Choudhary (@TheLinuxPoint)
-# Version: 2.0 — Now with custom add/remove support!
+# Version: 2.1 — Now with Ctrl+C auto-disable support!
 # =====================================================
 
 HOSTS_FILE="/etc/hosts"
@@ -61,6 +61,15 @@ enable_focus() {
   done
 
   echo -e "${GREEN}✅ Focus Mode enabled!${RESET}"
+  echo -e "${YELLOW}Press Ctrl+C to disable and exit...${RESET}"
+
+  # Trap Ctrl+C to disable focus mode before exit
+  trap 'echo -e "\n${YELLOW}⛔ Ctrl+C detected. Disabling Focus Mode...${RESET}"; disable_focus; exit 0' INT
+
+  # Keep script running until user presses Ctrl+C
+  while true; do
+    sleep 1
+  done
 }
 
 disable_focus() {
@@ -116,7 +125,7 @@ view_sites() {
 show_menu() {
   clear
   echo "╔══════════════════════════════════════╗"
-  echo "║        🧠 Focus Mode Tool v2.0       ║"
+  echo "║        🧠 Focus Mode Tool v2.1       ║"
   echo "╚══════════════════════════════════════╝"
   echo
   echo "1) Enable Focus Mode"
